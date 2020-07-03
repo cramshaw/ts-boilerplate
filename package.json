@@ -6,9 +6,13 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint '*/**/*.ts'",
-    "start": "ts-node src/index.ts",
+    "start": "ts-node-dev --respawn src/index.ts",
+    "client": "ts-node src/client.ts",
     "start:dist": "npm run build && node ./dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "protos:js": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./src/protos --grpc_out=./src/protos --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin` -I ./protos protos/*.proto",
+    "protos:ts": "grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --ts_out=./src/protos/ -I ./protos protos/*.proto",
+    "protos": "npm run protos:js && npm run protos:ts"
   },
   "author": "Chris Ramshaw",
   "license": "MPL-2.0",
@@ -18,11 +22,14 @@
     "eslint": "^7.3.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "grpc_tools_node_protoc_ts": "^4.1.0",
     "prettier": "^2.0.5",
     "ts-node": "^8.10.2",
+    "ts-node-dev": "^1.0.0-pre.50",
     "typescript": "^3.9.6"
   },
   "dependencies": {
-    "grpc": "^1.24.3"
+    "grpc": "^1.24.3",
+    "grpc-tools": "^1.9.0"
   }
 }
