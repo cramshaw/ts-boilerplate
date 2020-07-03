@@ -1,15 +1,15 @@
 import grpc from 'grpc';
-import services from './protos/hello_grpc_pb';
-import messages from './protos/hello_pb';
+import { IStatusServer, StatusService } from './protos/hello_grpc_pb';
+import { AliveReply, AliveRequest, AliveStreamRequest } from './protos/hello_pb';
 
 /**
  * Implements the SayHello RPC method.
  */
-class StatusServer implements services.IStatusServer {
+class StatusServer implements IStatusServer {
   counter = 0;
 
-  alive(call: grpc.ServerUnaryCall<messages.AliveRequest>, callback: grpc.sendUnaryData<messages.AliveReply>) {
-    const reply = new messages.AliveReply();
+  alive(call: grpc.ServerUnaryCall<AliveRequest>, callback: grpc.sendUnaryData<AliveReply>) {
+    const reply = new AliveReply();
     console.log(call.request.getName());
     this.counter++;
     console.log(this.counter);
@@ -17,12 +17,12 @@ class StatusServer implements services.IStatusServer {
     callback(null, reply);
   }
 
-  async aliveStream(call: grpc.ServerWritableStream<messages.AliveStreamRequest>): Promise<void> {
+  async aliveStream(call: grpc.ServerWritableStream<AliveStreamRequest>): Promise<void> {
     console.log(`${new Date().toISOString()}    getChat`);
     const makeReturn = () => {
       for (const comment of ['comment', 'comment2']) {
         console.log(comment);
-        const reply = new messages.AliveReply();
+        const reply = new AliveReply();
         reply.setMessage(comment);
         call.write(reply);
       }
@@ -40,7 +40,7 @@ class StatusServer implements services.IStatusServer {
  */
 function main() {
   const server = new grpc.Server();
-  server.addService<services.IStatusServer>(services.StatusService, new StatusServer());
+  server.addService<IStatusServer>(StatusService, new StatusServer());
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
   server.start();
 }
