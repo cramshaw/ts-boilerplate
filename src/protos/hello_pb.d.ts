@@ -27,6 +27,31 @@ export namespace AliveRequest {
     }
 }
 
+export class AliveStreamRequest extends jspb.Message { 
+    getName(): string;
+    setName(value: string): AliveStreamRequest;
+
+    getNumGreetings(): number;
+    setNumGreetings(value: number): AliveStreamRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): AliveStreamRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: AliveStreamRequest): AliveStreamRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: AliveStreamRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): AliveStreamRequest;
+    static deserializeBinaryFromReader(message: AliveStreamRequest, reader: jspb.BinaryReader): AliveStreamRequest;
+}
+
+export namespace AliveStreamRequest {
+    export type AsObject = {
+        name: string,
+        numGreetings: number,
+    }
+}
+
 export class AliveReply extends jspb.Message { 
     getMessage(): string;
     setMessage(value: string): AliveReply;

@@ -26,6 +26,17 @@ function deserialize_epi2me_status_AliveRequest(buffer_arg) {
   return hello_pb.AliveRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_epi2me_status_AliveStreamRequest(arg) {
+  if (!(arg instanceof hello_pb.AliveStreamRequest)) {
+    throw new Error('Expected argument of type epi2me.status.AliveStreamRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_epi2me_status_AliveStreamRequest(buffer_arg) {
+  return hello_pb.AliveStreamRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 
 // The greeting service definition.
 var StatusService = exports.StatusService = {
@@ -38,6 +49,18 @@ alive: {
     responseType: hello_pb.AliveReply,
     requestSerialize: serialize_epi2me_status_AliveRequest,
     requestDeserialize: deserialize_epi2me_status_AliveRequest,
+    responseSerialize: serialize_epi2me_status_AliveReply,
+    responseDeserialize: deserialize_epi2me_status_AliveReply,
+  },
+  // Sends multiple greetings
+aliveStream: {
+    path: '/epi2me.status.Status/AliveStream',
+    requestStream: false,
+    responseStream: true,
+    requestType: hello_pb.AliveStreamRequest,
+    responseType: hello_pb.AliveReply,
+    requestSerialize: serialize_epi2me_status_AliveStreamRequest,
+    requestDeserialize: deserialize_epi2me_status_AliveStreamRequest,
     responseSerialize: serialize_epi2me_status_AliveReply,
     responseDeserialize: deserialize_epi2me_status_AliveReply,
   },

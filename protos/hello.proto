@@ -7,7 +7,7 @@ service Status {
   // Sends a greeting
   rpc Alive (AliveRequest) returns (AliveReply) {}
   // Sends multiple greetings
-//   rpc AliveStream (AliveStreamRequest) returns (stream AliveReply) {}
+  rpc AliveStream (AliveStreamRequest) returns (stream AliveReply) {}
 }
 
 // The request message containing the user's name.
@@ -16,40 +16,12 @@ message AliveRequest {
 }
 
 // The request message containing the user's name and how many greetings they want.
-// message AliveStreamRequest {
-//   string name = 1;
-//   uint32 num_greetings = 2;
-// }
+message AliveStreamRequest {
+  string name = 1;
+  uint32 num_greetings = 2;
+}
 
 // The response message containing the greetings.
 message AliveReply {
   string message = 1; 
 }
-
-// syntax = "proto3";
-
-// package helloworld;
-
-// // The greeting service definition.
-// service Greeter {
-//   // Sends a greeting
-//   rpc SayHello (HelloRequest) returns (HelloReply) {}
-//   // Sends multiple greetings
-//   rpc SayMultiHello (MultiHelloRequest) returns (stream HelloReply) {}
-// }
-
-// // The request message containing the user's name.
-// message HelloRequest {
-//   string name = 1;
-// }
-
-// // The request message containing the user's name and how many greetings they want.
-// message MultiHelloRequest {
-//   string name = 1;
-//   required uint32 num_greetings = 2;
-// }
-
-// // The response message containing the greetings.
-// message HelloReply {
-//   string message = 1; 
-// }

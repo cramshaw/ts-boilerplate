@@ -16,6 +16,23 @@ class StatusServer implements services.IStatusServer {
     reply.setMessage('Hello ' + call.request.getName());
     callback(null, reply);
   }
+
+  async aliveStream(call: grpc.ServerWritableStream<messages.AliveStreamRequest>): Promise<void> {
+    console.log(`${new Date().toISOString()}    getChat`);
+    const makeReturn = () => {
+      for (const comment of ['comment', 'comment2']) {
+        console.log(comment);
+        const reply = new messages.AliveReply();
+        reply.setMessage(comment);
+        call.write(reply);
+      }
+    };
+    const started = setInterval(makeReturn, 500);
+    setTimeout(() => {
+      clearInterval(started);
+      call.end();
+    }, 2000);
+  }
 }
 /**
  * Starts an RPC server that receives requests for the Greeter service at the
@@ -23,9 +40,7 @@ class StatusServer implements services.IStatusServer {
  */
 function main() {
   const server = new grpc.Server();
-  // server.addService(services.StatusService, { Alive: alive });
   server.addService<services.IStatusServer>(services.StatusService, new StatusServer());
-  // server.addService<ISongsServer>(SongsService, new SongsServer());
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
   server.start();
 }
